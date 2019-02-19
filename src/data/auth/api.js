@@ -14,15 +14,21 @@ export const logout = () => {
   firebaseApp.auth().signOut()
 }
 
-export const user$ = Observable.create(observer =>
+Observable.prototype["fantasy-land/map"] = function(f) {
+  return this.pipe(map(f))
+}
+
+const auth$ = Observable.create(observer =>
   firebaseApp.auth().onAuthStateChanged(x => observer.next(x)),
-).pipe(
-  map(user => S.toMaybe(user)),
-  map(user =>
-    S.map(u => ({
+)
+
+export const user$ = S.unchecked.pipe([
+  S.unchecked.map(S.unchecked.toMaybe),
+  S.unchecked.map(
+    S.unchecked.map(u => ({
       name: u.displayName,
       email: u.email,
       avatar: u.photoURL,
-    }))(user),
+    })),
   ),
-)
+])(auth$)
