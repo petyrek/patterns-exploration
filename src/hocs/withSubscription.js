@@ -27,18 +27,18 @@ StreamState.prototype.map = function(render) {
 export const withSubscription = stream$ => Component =>
   class extends React.Component {
     state = {
-      state: StreamState.Loading,
+      stateU: StreamState.Loading,
     }
 
     componentWillMount() {
       this.subscription = stream$.subscribe(
         value =>
           this.setState({
-            state: StreamState.Success(value),
+            stateU: StreamState.Success(value),
           }),
         error =>
           this.setState({
-            state: StreamState.Failure(error),
+            stateU: StreamState.Failure(error),
           }),
       )
     }
@@ -48,6 +48,6 @@ export const withSubscription = stream$ => Component =>
     }
 
     render() {
-      return <Component {...this.props} state={this.state.state} />
+      return <Component {...this.props} stateU={this.state.stateU} />
     }
   }

@@ -1,28 +1,25 @@
 import React from "react"
-import { login, logout, user$ } from "data/auth/api"
-import * as S from "sanctuary"
+import { user$ } from "data/auth/api"
 import { compose } from "recompose"
 import { withOpen } from "hocs/withOpen"
-import { withModal } from "hocs/withModal"
 import { withSubscription } from "hocs/withSubscription"
-import { BrandList } from "components/BrandList"
+import { GlobalStyle, AppWrap } from "./styled"
+import { Header } from "./Header"
+import { Content } from "./Content"
 
-const MakesModal = withModal(BrandList)
-
-const C = ({ state, isOpen, open, close }) =>
-  state.map(
-    S.maybe(<button onClick={login}>login</button>)(user => (
-      <>
-        <div>{user.name}</div>
-        <BrandList />
-        <button onClick={logout}>logout</button>
-        <button onClick={open}>open</button>
-        {isOpen && <MakesModal close={close} title="makes" />}
-      </>
-    )),
-  )
-
-export const App = compose(
+const enhancer = compose(
   withOpen,
   withSubscription(user$),
-)(C)
+)
+
+export const App = enhancer(({ stateU, isOpen, open, close }) => (
+  <>
+    <GlobalStyle />
+    {stateU.map(userM => (
+      <AppWrap>
+        <Header userM={userM} />
+        <Content />
+      </AppWrap>
+    ))}
+  </>
+))

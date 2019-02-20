@@ -6,6 +6,7 @@
     "daggy": "^1.4.0",
     "firebase": "^5.8.3",
     "most": "^1.7.3",
+    "polished": "^3.0.0",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-scripts": "2.1.5",
