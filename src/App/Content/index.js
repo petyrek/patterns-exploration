@@ -1,18 +1,17 @@
 import React from "react"
-import { BrandList } from "components/BrandList"
-import { Button } from "components/Button"
 import { ContentWrap } from "./styled"
-import { withModal } from "hocs/withModal"
-import { withOpen } from "hocs/withOpen"
+import { urls } from "pages/urls"
+import { S } from "sanct"
+import { Switch, Route, withRouter } from "react-router-dom"
 
-const MakesModal = withModal(BrandList)
+const enhancer = withRouter
 
-const enhancer = withOpen
-
-export const Content = enhancer(({ isOpen, open, close }) => (
+export const Content = enhancer(() => (
   <ContentWrap>
-    <BrandList />
-    <Button onClick={open} text="open modal" />
-    {isOpen && <MakesModal close={close} title="makes" />}
+    <Switch>
+      {S.map(x => console.log(x) || <Route key={x.path} exact {...x} />)(
+        S.values(urls),
+      )}
+    </Switch>
   </ContentWrap>
 ))

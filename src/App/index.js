@@ -4,6 +4,7 @@ import { compose } from "recompose"
 import { withOpen } from "hocs/withOpen"
 import { withSubscription } from "hocs/withSubscription"
 import { GlobalStyle, AppWrap } from "./styled"
+import { BrowserRouter } from "react-router-dom"
 import { Header } from "./Header"
 import { Content } from "./Content"
 
@@ -13,13 +14,15 @@ const enhancer = compose(
 )
 
 export const App = enhancer(({ stateU, isOpen, open, close }) => (
-  <>
-    <GlobalStyle />
-    {stateU.map(userM => (
-      <AppWrap>
-        <Header userM={userM} />
-        <Content />
-      </AppWrap>
-    ))}
-  </>
+  <BrowserRouter>
+    <>
+      <GlobalStyle />
+      {stateU.map(userM => (
+        <AppWrap>
+          <Header userM={userM} />
+          <Content userM={userM} />
+        </AppWrap>
+      ))}
+    </>
+  </BrowserRouter>
 ))

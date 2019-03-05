@@ -1,9 +1,15 @@
-import { Observable } from "rxjs"
+import { Observable, BehaviorSubject } from "rxjs"
 import { withSubscription } from "hocs/withSubscription"
 import { firebaseApp } from "firebaseApp"
 
-const getCollectionObservable = collectionKey =>
-  Observable.create(observer =>
+const cache = {}
+
+const getCollectionSubject = collectionKey => {
+  // if possible to retrieve from cache then do it
+  if (cache[collectionKey]) return cache[collectionKey]
+
+  // otherwise create an observable and subject
+  const collection$ = Observable.create(observer =>
     firebaseApp
       .firestore()
       .collection(collectionKey)
@@ -12,6 +18,12 @@ const getCollectionObservable = collectionKey =>
         observer.next(x.docs.map(doc => ({ id: doc.id, ...doc.data() }))),
       ),
   )
+  const subject$ = new BehaviorSubject()
+  collection$.subscribe(subject$)
+  cache[collectionKey] = subject$
+
+  return subject$
+}
 
 export const withCollection = collectionKey =>
-  withSubscription(getCollectionObservable(collectionKey))
+  withSubscription(getCollectionSubject(collectionKey))
