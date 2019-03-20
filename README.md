@@ -16,4 +16,4 @@ explore patterns for react development
 - var\$ means it is an observable rxjs stream
 - varU means it is a daggy.js union type
 - varM means it is a Maybe monad
-- varE means it is an Either monad (not there yet)
+- varE means it is an Effect - this should probably be reworked into IO monad, though sanctuaryJS lacks it
